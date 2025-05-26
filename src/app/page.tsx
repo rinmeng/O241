@@ -1,12 +1,22 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Pause, Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const size = 800; // Total canvas size in pixels
+  const size = 600; // Total canvas size in pixels
   const gridSize = 50; // Number of cells in each dimension
   const cellSize = size / gridSize; // Size of each cell
+
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,19 +48,25 @@ export default function Home() {
   }, [cellSize]);
 
   return (
-    <Card className="my-10 w-3/4 mx-auto">
+    <Card className="my-10 mx-auto">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">
           Grid Canvas ({gridSize}x{gridSize})
         </CardTitle>
+        <CardDescription className="flex justify-center gap-4">
+          <Button variant={"default"} onClick={() => setIsPlaying(!isPlaying)}>
+            {isPlaying ? <Pause /> : <Play />}
+            {isPlaying ? "Pause" : "Start"}
+          </Button>
+        </CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="flex justify-center items-center mx-auto">
         <canvas
           ref={canvasRef}
           width={size}
           height={size}
-          className="z-10 p-10 flex justify-center items-center mx-auto border rounded-3xl"
+          className="z-10 p-10 border rounded-3xl"
         />
       </CardContent>
     </Card>
